@@ -1,4 +1,5 @@
 import 'package:assetinventory/page/iampage.dart';
+import 'package:assetinventory/page/login.dart';
 import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
@@ -8,6 +9,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  bool login = true;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,8 +20,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Balsamiq',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: (login)?MyHomePage():LoginPage(),
     );
   }
 }
-
