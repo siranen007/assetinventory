@@ -1,5 +1,4 @@
 import 'package:assetinventory/page/iampage.dart';
-import 'package:assetinventory/page/login.dart';
 import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
@@ -7,14 +6,8 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  bool login = true;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +18,7 @@ class _MyAppState extends State<MyApp> {
         fontFamily: 'Balsamiq',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: (login)?MyHomePage():LoginPage(),
+      home: MyHomePage(),
     );
   }
 }

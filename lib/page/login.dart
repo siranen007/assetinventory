@@ -1,5 +1,6 @@
-import 'package:assetinventory/ui/custommaterialbutton.dart';
-import 'package:assetinventory/ui/customtextfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_web/firebase_auth_web.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,6 +9,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool status = true;
+  String user, password;
+
+  @override
+  void initState() {
+    super.initState();
+    checkStatus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +42,8 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  RichText(textAlign: TextAlign.center,
+                  RichText(
+                    textAlign: TextAlign.center,
                     text: TextSpan(
                       text: 'IT\nAsset Inventory\nSystem',
                       style: TextStyle(
@@ -50,30 +61,113 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  CustomTextField(
-                    Icon(
-                      Icons.person,
-                      color: Colors.black,
-                      size: 40,
+                  Material(
+                    elevation: 5.0,
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
-                    'Email',
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child:
+                              Icon(Icons.people, size: 30, color: Colors.black),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          width: 350,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              onChanged: (value) => user = value.trim(),
+                              decoration: InputDecoration(
+                                  hintText: 'Email',
+                                  fillColor: Colors.lightBlue[100],
+                                  filled: true,
+                                  border: InputBorder.none),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  CustomTextField(
-                      Icon(
-                        Icons.lock,
-                        color: Colors.black,
-                        size: 40,
-                      ),
-                      'Password'),
+                  Material(
+                    elevation: 5.0,
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Icon(
+                            Icons.lock,
+                            size: 40,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          width: 350,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              onChanged: (value) => password = value.trim(),
+                              decoration: InputDecoration(
+                                  hintText: 'Password',
+                                  fillColor: Colors.lightBlue[100],
+                                  filled: true,
+                                  border: InputBorder.none),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                     width: 400,
                     height: 50,
-                    child: CustomMaterialButton(
-                        Text(
-                          'Log In',
-                          style: TextStyle(fontSize: 30, color: Colors.black),
+                    child: MaterialButton(
+                      onPressed: () {},
+                      elevation: 6.0,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(fontSize: 20, color: Colors.black),
                         ),
-                        Colors.white),
+                      ),
+                      color: Colors.white,
+                      hoverColor: Colors.blue[200],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -83,4 +177,16 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+Future<Null> checkStatus() async {
+  Firebase.initializeApp().then((value) => {
+        FirebaseAuth.instance.authStateChanges().listen((User user) {
+          if (user == null) {
+            print('logout');
+          } else {
+            print('login');
+          }
+        })
+      });
 }

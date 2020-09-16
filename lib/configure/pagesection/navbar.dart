@@ -1,3 +1,4 @@
+import 'package:assetinventory/page/login.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -6,7 +7,7 @@ class NavBar extends StatelessWidget {
     return LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth > 800) {
         return DesktopNavBar();
-      }  else {
+      } else {
         return MobileNavBar();
       }
     });
@@ -85,11 +86,19 @@ class DesktopNavBar extends StatelessWidget {
                   ),
                   MaterialButton(
                     elevation: 2.0,
-                    onPressed: () {},
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginPage(),
+                      ),
+                    ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 5,),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 5,
+                      ),
                       child: Text(
-                        'Log Out',
+                        'Log In',
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
@@ -188,9 +197,14 @@ class MobileNavBar extends StatelessWidget {
                 ),
                 MaterialButton(
                   elevation: 2.0,
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                    ),
+                  ),
                   child: Text(
-                    'Log Out',
+                    'Log In',
                     style: TextStyle(color: Colors.black),
                   ),
                   color: Colors.white,
