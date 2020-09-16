@@ -1,5 +1,7 @@
+import 'package:assetinventory/page/iampage.dart';
+import 'package:assetinventory/utility/normalDialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth_web/firebase_auth_web.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -9,13 +11,38 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool status = true;
+  bool status;
   String user, password;
 
   @override
   void initState() {
     super.initState();
+    status = false;
     checkStatus();
+  }
+
+  Future<Null> checkStatus() async {
+    Firebase.initializeApp().then((value) => {
+          FirebaseAuth.instance.authStateChanges().listen((event) {
+            if (event == null) {
+              setState(() {
+                status = false;
+              });
+            } else {
+              String uid = event.uid;
+              checkTeam(uid);
+            }
+          })
+        });
+  }
+
+  Future<Null> checkTeam(String uid) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    await firestore.collection('user').doc(uid).snapshots().listen((event) {
+      String team = event.data()['team'];
+      routeToService(team);
+    });
   }
 
   @override
@@ -140,6 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.normal,
                               ),
+                              obscureText: true,
                             ),
                           ),
                         ),
@@ -150,7 +178,16 @@ class _LoginPageState extends State<LoginPage> {
                     width: 400,
                     height: 50,
                     child: MaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (user == null ||
+                            user.isEmpty ||
+                            password == null ||
+                            password.isEmpty) {
+                          normalDialog(context, 'Please fill every blank');
+                        } else {
+                          loginUserPassword();
+                        }
+                      },
                       elevation: 6.0,
                       child: Padding(
                         padding:
@@ -177,16 +214,46 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
 
-Future<Null> checkStatus() async {
-  Firebase.initializeApp().then((value) => {
-        FirebaseAuth.instance.authStateChanges().listen((User user) {
-          if (user == null) {
-            print('logout');
-          } else {
-            print('login');
-          }
-        })
+  Future<Null> loginUserPassword() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    await auth
+        .signInWithEmailAndPassword(email: user, password: password)
+        .then((value) async {
+      String uid = value.user.uid;
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(uid)
+          .snapshots()
+          .listen((event) {
+        String team = event.data()['team'];
+        routeToService(team);
       });
+    }).catchError((response) {
+      String string = response.message;
+      normalDialog(context, string);
+    });
+  }
+
+  void routeToService(String team) {
+    switch (team) {
+      case 'iam':
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MyHomePage(),
+            ),
+            (route) => false);
+        break;
+      // case 'Student':
+      //   Navigator.pushAndRemoveUntil(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => MyServiceStudent(),
+      //       ),
+      //       (route) => false);
+      //   break;
+      default:
+    }
+  }
 }

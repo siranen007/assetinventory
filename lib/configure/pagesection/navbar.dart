@@ -1,4 +1,5 @@
 import 'package:assetinventory/page/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -86,19 +87,24 @@ class DesktopNavBar extends StatelessWidget {
                   ),
                   MaterialButton(
                     elevation: 2.0,
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ),
-                    ),
+                    onPressed: () async {
+                      FirebaseAuth auth = FirebaseAuth.instance;
+                      await auth.signOut().then(
+                            (value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                            ),
+                          );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 5,
                         horizontal: 5,
                       ),
                       child: Text(
-                        'Log In',
+                        'Log Out',
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
@@ -204,7 +210,7 @@ class MobileNavBar extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Log In',
+                    'Log Out',
                     style: TextStyle(color: Colors.black),
                   ),
                   color: Colors.white,
