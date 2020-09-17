@@ -1,3 +1,4 @@
+import 'package:assetinventory/page/iamworking.dart';
 import 'package:assetinventory/page/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,7 @@ class DesktopNavBar extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      print('Press Accounts');
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => WorkingWithAccount(),));
                     },
                     child: Text(
                       'Account',
