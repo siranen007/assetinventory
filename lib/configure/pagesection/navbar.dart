@@ -1,5 +1,6 @@
 import 'package:assetinventory/page/iamworking.dart';
 import 'package:assetinventory/page/login.dart';
+import 'package:assetinventory/utility/forloop.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -72,7 +73,7 @@ class DesktopNavBar extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Press cerificate');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ForLoop(),));
                     },
                     child: Text(
                       'Certificate',

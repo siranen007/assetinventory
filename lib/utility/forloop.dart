@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:assetinventory/models/user.dart';
 import 'package:flutter/material.dart';
 
-class WorkingWithAccount extends StatelessWidget {
-  
+class ForLoop extends StatelessWidget {
+  int i = 0;
   Future<List<User>> getUsersFromJSON(BuildContext context) async {
     String jsonString = await DefaultAssetBundle.of(context)
         .loadString('assets/files/data.json');
@@ -23,19 +23,13 @@ class WorkingWithAccount extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<User> users = snapshot.data;
-            return ListView.builder(
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(users[index].name),
-                  subtitle: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(users[index].team),
-                      Text(users[index].manager),
-                    ],
-                  ),
-                );
-              },
+            return Container(
+              child: Column(
+                children: [
+                  for (var i = 0; i < users.length; i++)
+                    Text('${users[i].name}--${users[i].team}--${users[i].manager}'),
+                ],
+              ),
             );
           } else {}
         },
