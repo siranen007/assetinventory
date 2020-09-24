@@ -1,4 +1,4 @@
-import 'package:assetinventory/page/iampage.dart';
+import 'package:assetinventory/page/login.dart';
 import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Balsamiq',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: LoginPage(),
     );
   }
 }

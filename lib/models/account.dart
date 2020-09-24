@@ -15,6 +15,10 @@ class Account {
   bool mfa;
   String mfamethod;
   String remark;
+  String submitdate;
+  String submitby;
+  String modifydate;
+  String modifyby;
   String status;
   String decommssiondate;
 
@@ -34,6 +38,10 @@ class Account {
       this.passwordversion2,
       this.mfa,
       this.mfamethod,
+      this.submitdate,
+      this.submitby,
+      this.modifydate,
+      this.modifyby,
       this.remark,
       this.status,
       this.decommssiondate});
@@ -55,6 +63,10 @@ class Account {
     mfa = json['mfa'];
     mfamethod = json['mfamethod'];
     remark = json['remark'];
+    submitdate = json['submitdate'];
+    submitby = json['submitby'];
+    modifydate = json['modifydate'];
+    modifyby = json['modifyby'];
     status = json['status'];
     decommssiondate = json['decommssiondate'];
   }
@@ -77,6 +89,10 @@ class Account {
     data['mfa'] = this.mfa;
     data['mfamethod'] = this.mfamethod;
     data['remark'] = this.remark;
+    data['submitdate'] = this.submitdate;
+    data['submitby'] = this.submitby;
+    data['modifydate'] = this.modifydate;
+    data['modifyby'] = this.modifyby;
     data['status'] = this.status;
     data['decommssiondate'] = this.decommssiondate;
     return data;
